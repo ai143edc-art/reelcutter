@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReelCutter — Lambi video se ready Reels & Shorts, ek click me</title>
+<meta name="description" content="ReelCutter: lambi video ko auto 9:16 Reels/Shorts me kaato, captions + Part numbering + logo watermark lagao, aur seedha YouTube pe schedule karo. Free Windows app.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<style>
+  :root{
+    --bg:#0b0d12; --card:#14171f; --card2:#1e222d; --field:#232836;
+    --accent:#8b5cf6; --accent2:#7a48f0; --green:#22c55e; --text:#f1f2f6; --muted:#8e93a6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.6}
+  a{color:var(--accent);text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(11,13,18,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--card2)}
+  .nav-in{display:flex;align-items:center;gap:12px;padding:14px 0}
+  .nav-in img{width:34px;height:34px;border-radius:9px}
+  .brand{font-size:1.15rem;font-weight:700}
+  .brand small{background:var(--field);color:var(--accent);font-size:.6rem;font-weight:800;padding:3px 7px;border-radius:6px;margin-left:8px;vertical-align:middle;letter-spacing:.5px}
+  .nav-links{margin-left:auto;display:flex;gap:22px;align-items:center}
+  .nav-links a{color:var(--muted);font-size:.92rem}
+  .nav-links a:hover{color:var(--text)}
+  .btn{display:inline-block;background:var(--accent);color:#fff;font-weight:700;padding:10px 20px;border-radius:11px;transition:.2s}
+  .btn:hover{background:var(--accent2);transform:translateY(-1px)}
+  .btn.ghost{background:var(--field);color:var(--text)}
+  .btn.ghost:hover{background:var(--card2)}
+  .btn.big{font-size:1.05rem;padding:15px 30px;border-radius:13px}
+
+  /* hero */
+  .hero{padding:74px 0 30px;text-align:center}
+  .hero img.logo{width:84px;height:84px;border-radius:20px;margin-bottom:22px;box-shadow:0 12px 40px rgba(139,92,246,.35)}
+  h1{font-size:clamp(1.9rem,4.5vw,3.1rem);line-height:1.2;font-weight:800}
+  h1 span{color:var(--accent)}
+  .sub{color:var(--muted);font-size:1.1rem;max-width:640px;margin:18px auto 30px}
+  .dl-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+  .meta{color:var(--muted);font-size:.85rem}
+  .meta b{color:var(--green)}
+
+  /* screenshot */
+  .shot{margin:46px auto 0;max-width:980px;border-radius:16px;overflow:hidden;border:1px solid var(--card2);box-shadow:0 30px 80px rgba(0,0,0,.55)}
+  .shot img{width:100%;display:block}
+
+  /* sections */
+  section{padding:72px 0}
+  h2{font-size:1.9rem;font-weight:800;text-align:center;margin-bottom:10px}
+  .sec-sub{color:var(--muted);text-align:center;max-width:560px;margin:0 auto 44px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .card{background:var(--card);border:1px solid var(--card2);border-radius:16px;padding:24px;transition:.2s}
+  .card:hover{border-color:var(--accent);transform:translateY(-3px)}
+  .card .ico{font-size:1.8rem}
+  .card h3{font-size:1.05rem;margin:12px 0 6px}
+  .card p{color:var(--muted);font-size:.92rem}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;counter-reset:st}
+  .step{background:var(--card);border:1px solid var(--card2);border-radius:16px;padding:24px;position:relative}
+  .step::before{counter-increment:st;content:counter(st);position:absolute;top:-14px;left:20px;background:var(--accent);color:#fff;font-weight:800;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+  .step h3{font-size:1rem;margin:8px 0 6px}
+  .step p{color:var(--muted);font-size:.9rem}
+
+  /* req + faq */
+  .box{background:var(--card);border:1px solid var(--card2);border-radius:16px;padding:28px;max-width:760px;margin:0 auto}
+  .box ul{list-style:none}
+  .box li{padding:10px 0;border-bottom:1px solid var(--card2);color:var(--muted)}
+  .box li:last-child{border:none}
+  .box li b{color:var(--text)}
+  .tag{display:inline-block;background:var(--field);color:var(--green);font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:7px;margin-left:8px}
+  .tag.opt{color:var(--muted)}
+  details{background:var(--card);border:1px solid var(--card2);border-radius:14px;padding:18px 22px;margin-bottom:12px;max-width:760px;margin-left:auto;margin-right:auto}
+  details summary{cursor:pointer;font-weight:600;outline:none}
+  details p{color:var(--muted);margin-top:10px;font-size:.94rem}
+
+  /* download band */
+  .band{background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(34,197,94,.10));border:1px solid var(--card2);border-radius:22px;text-align:center;padding:54px 26px}
+  .band h2{margin-bottom:8px}
+
+  footer{border-top:1px solid var(--card2);padding:30px 0;text-align:center;color:var(--muted);font-size:.85rem}
+  footer .heart{color:#f87171}
+  @media(max-width:640px){ .nav-links a.hideS{display:none} section{padding:52px 0} }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <img src="assets/logo.png" alt="ReelCutter logo">
+    <div class="brand">ReelCutter<small>PRO</small></div>
+    <div class="nav-links">
+      <a href="#features" class="hideS">Features</a>
+      <a href="#how" class="hideS">Kaise use karein</a>
+      <a href="#req" class="hideS">Requirements</a>
+      <a href="#faq" class="hideS">FAQ</a>
+      <a href="#download" class="btn">⬇ Download</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <img class="logo" src="assets/logo.png" alt="ReelCutter">
+  <h1>Lambi video se <span>ready Reels & Shorts</span><br>— ek click me</h1>
+  <p class="sub">Video ya link daalo → auto 9:16 clips + captions + "Part 1, 2, 3…" series numbering + logo watermark → aur seedha <b style="color:var(--text)">YouTube Shorts pe schedule</b>. Sab kuch ek hi app me.</p>
+  <div class="dl-row">
+    <a class="btn big" href="ReelCutter_Setup.exe" download>⬇ Download Setup &nbsp;·&nbsp; 60 MB</a>
+    <a class="btn big ghost" href="ReelCutter.exe" download>Portable .exe</a>
+  </div>
+  <p class="meta">Windows 10/11 (64-bit) &nbsp;•&nbsp; <b>100% Free</b> &nbsp;•&nbsp; koi account nahi chahiye</p>
+  <div class="shot"><img src="assets/screenshot.png" alt="ReelCutter app screenshot — clips gallery aur settings"></div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <h2>Sab kuch jo ek reel-factory ko chahiye 🏭</h2>
+    <p class="sec-sub">Kaatne se le kar upload tak — pura pipeline automatic.</p>
+    <div class="grid">
+      <div class="card"><div class="ico">✂️</div><h3>Auto cutting</h3><p>Lambi video fixed-length clips me. 9:16, 16:9, 1:1 — blur/black/crop background ke saath.</p></div>
+      <div class="card"><div class="ico">🔢</div><h3>Part series numbering</h3><p>Har clip pe "Title Part 17, 18, 19…" auto. Pichla part number daalo, series wahi se continue.</p></div>
+      <div class="card"><div class="ico">📝</div><h3>Ready captions</h3><p>Har clip ka caption .txt — title + rotating CTA. Bas copy-paste karke post karo.</p></div>
+      <div class="card"><div class="ico">🏷️</div><h3>Logo watermark + text</h3><p>Apna logo aur custom text har clip pe — drag karke position, size % se adjust.</p></div>
+      <div class="card"><div class="ico">⚡</div><h3>GPU speed + Fast cut</h3><p>NVIDIA/Intel/AMD hardware encoding auto-detect. Fast-cut mode me seconds me clips.</p></div>
+      <div class="card"><div class="ico">🔗</div><h3>Link se video</h3><p>YouTube/Insta/FB link paste karo — app khud download karke clips bana degi.</p></div>
+      <div class="card"><div class="ico">📅</div><h3>YouTube auto-upload</h3><p>Saare clips ek click me YouTube Shorts pe — roz ek auto-publish hone wala schedule.</p></div>
+      <div class="card"><div class="ico">📱</div><h3>Phone pe share (QR)</h3><p>QR scan karo, clip phone pe — wahan se Instagram/WhatsApp pe native share.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>4 steps — bas itna hi</h2>
+    <p class="sec-sub">Pehli baar setup ke baad rozana sirf 1 minute ka kaam.</p>
+    <div class="steps">
+      <div class="step"><h3>Install karo</h3><p>Setup download karke Next-Next-Install. Desktop shortcut ban jayega.</p></div>
+      <div class="step"><h3>ffmpeg daalo</h3><p>ffmpeg.exe + ffprobe.exe ReelCutter ke install folder me copy kar do (neeche link hai). Ek hi baar.</p></div>
+      <div class="step"><h3>Video/link + Start</h3><p>Video chuno ya link paste karo, title likho, Start dabao — clips + captions ready.</p></div>
+      <div class="step"><h3>Upload/Share</h3><p>⬆ YouTube se schedule karo, ya QR se phone pe le ke Insta pe daalo. Done!</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="req">
+  <div class="wrap">
+    <h2>Requirements</h2>
+    <p class="sec-sub">Seedha-saadha — bas ek cheez chahiye.</p>
+    <div class="box">
+      <ul>
+        <li><b>Windows 10/11</b> (64-bit) <span class="tag">ZAROORI</span></li>
+        <li><b>ffmpeg</b> — <a href="https://www.gyan.dev/ffmpeg/builds/" target="_blank" rel="noopener">yahan se download</a> karke <code>ffmpeg.exe</code> + <code>ffprobe.exe</code> install folder me daal do:<br><code style="color:var(--accent)">C:\Users\&lt;naam&gt;\AppData\Local\Programs\ReelCutter</code> <span class="tag">ZAROORI</span></li>
+        <li><b>yt-dlp</b> — <a href="https://github.com/yt-dlp/yt-dlp/releases/latest" target="_blank" rel="noopener">yt-dlp.exe</a> usi folder me — sirf "link se video" feature ke liye <span class="tag opt">OPTIONAL</span></li>
+        <li><b>Google setup</b> — sirf YouTube auto-upload ke liye (app me instructions hain) <span class="tag opt">OPTIONAL</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>FAQ</h2>
+    <p class="sec-sub">Jo sawal sabse zyada aate hain.</p>
+    <details>
+      <summary>Windows "protected your PC" warning dikha raha hai?</summary>
+      <p>Ye har naye independent software ke saath hota hai (app abhi code-signed nahi hai). <b>More info → Run anyway</b> dabao. App 100% safe hai — koi data collect nahi hota, sab kuch tumhare PC pe hi rehta hai.</p>
+    </details>
+    <details>
+      <summary>Kya ye sach me free hai?</summary>
+      <p>Haan, bilkul free. Koi account, koi subscription, koi watermark-on-output nahi (sirf tumhara apna logo, agar lagao to 😄).</p>
+    </details>
+    <details>
+      <summary>YouTube pe roz kitne upload ho sakte hain?</summary>
+      <p>Google ka default quota ~6 upload/din ka hai. App schedule mode me clips ko private upload karke roz ek publish karta hai — quota ki tension nahi.</p>
+    </details>
+    <details>
+      <summary>Setup vs Portable — kaunsa loon?</summary>
+      <p><b>Setup</b> normal use ke liye best (shortcuts + uninstaller). <b>Portable</b> bina install ke chalta hai — pen-drive me bhi.</p>
+    </details>
+    <details>
+      <summary>Mera data/account safe hai?</summary>
+      <p>Haan. App kuch bhi upload/collect nahi karta. YouTube login ka token sirf tumhare PC pe (<code>~/.reelcutter_yt_token.json</code>) save hota hai. Source code app ke andar sealed hai — koi modify nahi kar sakta.</p>
+    </details>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <div class="band">
+      <h2>Shuru karo — abhi 🚀</h2>
+      <p class="sec-sub" style="margin-bottom:26px">Ek video daalo, baaki ReelCutter sambhal lega.</p>
+      <div class="dl-row">
+        <a class="btn big" href="ReelCutter_Setup.exe" download>⬇ Download ReelCutter Setup</a>
+        <a class="btn big ghost" href="ReelCutter.exe" download>Portable version</a>
+      </div>
+      <p class="meta">v1.0 &nbsp;•&nbsp; Windows 10/11 &nbsp;•&nbsp; Free forever</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    ReelCutter © <span id="yr">2026</span> — Made with <span class="heart">❤</span> by Vikku &nbsp;•&nbsp; Creators ke liye, creator ke dwara
+  </div>
+</footer>
+
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>
