@@ -242,6 +242,7 @@
     <a class="btn ghost big" href="https://github.com/ai143edc-art/reelcutter/releases/latest/download/ReelCutter.exe">Portable .exe</a>
   </div>
   <div class="meta-row">
+    <span class="chip" id="dlchip" style="display:none">⬇ <b id="dlcount">0</b> downloads so far</span>
     <span class="chip">🪟 Windows 10/11</span>
     <span class="chip"><b>100% Free</b> — forever</span>
     <span class="chip">🎬 ffmpeg included — zero setup</span>
@@ -409,6 +410,17 @@
 
 <script>
 document.getElementById('yr').textContent = new Date().getFullYear();
+// live download count (GitHub Releases API)
+fetch('https://api.github.com/repos/ai143edc-art/reelcutter/releases')
+  .then(r => r.json())
+  .then(rs => {
+    let n = 0;
+    (rs || []).forEach(r => (r.assets || []).forEach(a => n += a.download_count || 0));
+    if (n > 0) {
+      document.getElementById('dlcount').textContent = n.toLocaleString();
+      document.getElementById('dlchip').style.display = '';
+    }
+  }).catch(() => {});
 // duplicate ticker content for seamless loop
 const t = document.getElementById('tick');
 t.innerHTML += t.innerHTML;
