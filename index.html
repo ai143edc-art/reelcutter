@@ -379,7 +379,7 @@
     </details>
     <details class="reveal">
       <summary>Is my data / account safe?</summary>
-      <p>Yes. The app uploads or collects nothing on its own. Your YouTube login token is stored only on your PC. The source code is sealed inside the app — nobody can modify it.</p>
+      <p>Yes. Your videos, captions and YouTube login token never leave your PC. The only thing the app sends is a tiny anonymous launch ping (app version number only — no personal data, no file info) so we know how many people use each version. The source code is sealed inside the app — nobody can modify it.</p>
     </details>
   </div>
 </section>
@@ -430,5 +430,7 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 }), {threshold:.12});
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
+<script data-goatcounter="https://reelcutter.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
